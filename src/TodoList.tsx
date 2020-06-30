@@ -1,14 +1,17 @@
-import React, { useState, ChangeEvent, KeyboardEvent } from "react";
+import React, { ChangeEvent } from "react";
 import { FilterValType, TaskType } from "./App";
+import AddItemForm from "./AddItemForm";
 
 type TodoListPropsType = {
+  id: string;
   title: string;
   tasks: Array<TaskType>;
-  removeTask: (id: string) => void;
-  changeFilter: (value: FilterValType) => void;
-  addTask: (val: string) => void;
-  changeStatus: (taskId: string, isDone: boolean) => void;
+  removeTask: (id: string, todoListId: string) => void;
+  changeFilter: (id: string, value: FilterValType) => void;
+  addTask: (val: string, todoListId: string) => void;
+  changeStatus: (taskId: string, isDone: boolean, todoListID: string) => void;
   filter: FilterValType;
+  removeTodoList: (todoListID: string) => void;
 };
 
 export function TodoList(props: TodoListPropsType) {
@@ -17,19 +20,53 @@ export function TodoList(props: TodoListPropsType) {
     tasks,
     removeTask,
     changeFilter,
-    addTask,
     changeStatus,
     filter,
+    removeTodoList,
   } = props;
 
-  let [val, setVal] = useState<string>("");
-  let [error, setError] = useState<string | null>(null);
+  /*  let [val, setVal] = useState<string>("");
+  let [error, setError] = useState<string | null>(null);*/
+
+  /*  const addNewTask = () => {
+    if (val.trim() !== "") {
+      addTask(val, props.id);
+    } else {
+      setError("Title is required");
+    }
+    setVal("");
+  };*/
+
+  /*  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setVal(e.currentTarget.value);
+  };
+  const onChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setError(null);
+    setVal(e.currentTarget.value);
+  };*/
+
+  /*  const onClickNewLine = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && e.altKey) {
+      addNewTask();
+    } else if (e.key === "Enter") {
+      setVal(`${val}\r\n`);
+    }
+  };*/
+
+  /* const onKeyPressAdd = (e: KeyboardEvent<HTMLInputElement>) => {
+    setError(null);
+
+    if (e.charCode === 13) {
+      addNewTask();
+    }
+    // console.log(e.charCode);
+  };*/
 
   let tasksEls = tasks.map((el: TaskType) => {
-    const onRemoveTask = () => removeTask(el.id);
+    const onRemoveTask = () => removeTask(el.id, props.id);
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
       let newIsDone = e.currentTarget.checked; //new value checked for checked task
-      changeStatus(el.id, newIsDone);
+      changeStatus(el.id, newIsDone, props.id);
     };
     return (
       <li
@@ -42,49 +79,26 @@ export function TodoList(props: TodoListPropsType) {
       </li>
     );
   });
-  const addNewTask = () => {
-    if (val.trim() !== "") {
-      addTask(val);
-    } else {
-      setError("Title is required");
-    }
-    setVal("");
+
+  const createTaskTitle = (title: string) => {
+    props.addTask(title, props.id);
   };
 
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setVal(e.currentTarget.value);
-  };
-  const onChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setError(null);
-    setVal(e.currentTarget.value);
-  };
+  const onDeleteTodoList = () => removeTodoList(props.id);
 
-  const onClickNewLine = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && e.altKey) {
-      addNewTask();
-    } else if (e.key === "Enter") {
-      setVal(`${val}\r\n`);
-    }
-  };
-
-  const onKeyPressAdd = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
-
-    if (e.charCode === 13) {
-      addNewTask();
-    }
-    // console.log(e.charCode);
-  };
-
-  const onFilterAll = () => changeFilter("all");
-  const onFilterActive = () => changeFilter("active");
-  const onFilterCompleted = () => changeFilter("completed");
+  const onFilterAll = () => changeFilter(props.id, "all");
+  const onFilterActive = () => changeFilter(props.id, "active");
+  const onFilterCompleted = () => changeFilter(props.id, "completed");
 
   return (
     <div>
-      <h3>{title}</h3>
-      <div>
-        <textarea onChange={onChangeText} value={val} onKeyUp={onClickNewLine}>
+      <h3>
+        {title}
+        <button onClick={onDeleteTodoList}>x</button>
+      </h3>
+      <AddItemForm addItem={createTaskTitle} />
+      {/*<div>
+           <textarea onChange={onChangeText} value={val} onKeyUp={onClickNewLine}>
           {val}
         </textarea>
         <input
@@ -97,7 +111,7 @@ export function TodoList(props: TodoListPropsType) {
         />
         {error && <div className={"error-message"}>{error}</div>}
         <button onClick={addNewTask}>+</button>
-      </div>
+      </div>*/}
       <ul>{tasksEls}</ul>
       <div>
         <button
