@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import { TodoList } from "./TodoList";
 import { v1 } from "uuid";
+import AddItemForm from "./AddItemForm";
 
 export type TaskType = {
   id: string;
@@ -108,8 +109,24 @@ function App() {
     setTasks({ ...tasks });
   }
 
+  //add new TodoList
+  function addTodoList(title: string) {
+    //common id for tasks[] and todolist
+    let newTodoListId: string = v1();
+
+    let newTodoList: TodoListType = {
+      id: newTodoListId,
+      title: title,
+      filter: "all",
+    };
+    setTodoLists([newTodoList, ...todoLists]);
+    //added new array of tasks for idtodolist
+    setTasks({ ...tasks, [newTodoListId]: [] });
+  }
+
   return (
     <div className="App">
+      <AddItemForm addItem={addTodoList} />
       {/*to render our few TodoList we need to use .map function*/}
       {todoLists.map((tl) => {
         // before return the list we need to filter it
