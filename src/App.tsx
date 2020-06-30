@@ -90,6 +90,28 @@ function App() {
     }
   }
 
+  const onSaveNewTaskTitle = (
+    newTitle: string,
+    taskId: string,
+    todoListId: string
+  ) => {
+    const newTasks: any = {
+      //type????
+      ...tasks,
+      [todoListId]: tasks[todoListId].map((t) =>
+        t.id === taskId ? { ...t, title: newTitle } : t
+      ),
+    };
+    setTasks(newTasks);
+    /*  let todoListTasks = tasks[todoListId];
+    let task = todoListTasks.find((t) => t.id === taskId);
+    if (task) {
+      task.title = newTitle;
+      // task = { ...task, title: newTitle };
+      setTasks({ ...tasks });
+    }*/
+  };
+
   /*
     let tasksForTodoList = tasks;
 
@@ -150,6 +172,7 @@ function App() {
             changeStatus={changeStatus}
             filter={tl.filter}
             removeTodoList={removeTodoList}
+            onSaveNewTaskTitle={onSaveNewTaskTitle}
           />
         );
       })}
