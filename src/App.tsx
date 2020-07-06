@@ -90,19 +90,35 @@ function App() {
     }
   }
 
+  const onChangeTitleList = (newTitle: string, todoListsId: string) => {
+    const todoList = todoLists.find((l) => l.id === todoListsId);
+    if (todoList) {
+      todoList.title = newTitle;
+      setTodoLists([...todoLists]);
+    }
+    /*    setTodoLists(
+      todoLists.map((l) => {
+        if (l.id === todoListsId) {
+          return { ...l, title: newTitle };
+        }
+        return l;
+      })
+    );*/
+  };
+
   const onSaveNewTaskTitle = (
     newTitle: string,
     taskId: string,
     todoListId: string
   ) => {
-    const newTasks: any = {
-      //type????
+    const newTasks = {
       ...tasks,
       [todoListId]: tasks[todoListId].map((t) =>
         t.id === taskId ? { ...t, title: newTitle } : t
       ),
     };
     setTasks(newTasks);
+
     /*  let todoListTasks = tasks[todoListId];
     let task = todoListTasks.find((t) => t.id === taskId);
     if (task) {
@@ -162,6 +178,7 @@ function App() {
         }
         return (
           <TodoList
+            onChangeTitleList={onChangeTitleList}
             key={tl.id}
             id={tl.id}
             tasks={tasksForTodoList}

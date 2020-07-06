@@ -18,6 +18,7 @@ type TodoListPropsType = {
     taskId: string,
     todoListId: string
   ) => void;
+  onChangeTitleList: (newTitle: string, todoListId: string) => void;
 };
 
 export function TodoList(props: TodoListPropsType) {
@@ -98,11 +99,15 @@ export function TodoList(props: TodoListPropsType) {
   const onFilterAll = () => changeFilter(props.id, "all");
   const onFilterActive = () => changeFilter(props.id, "active");
   const onFilterCompleted = () => changeFilter(props.id, "completed");
-
+  const onChangeTitleListHendler = (newTitle: string) =>
+    props.onChangeTitleList(newTitle, props.id);
   return (
     <div>
       <h3>
-        {title}
+        <EditableSpan
+          title={title}
+          onSaveTitle={(newTitle) => onChangeTitleListHendler(newTitle)}
+        />
         <button onClick={onDeleteTodoList}>x</button>
       </h3>
       <AddItemForm addItem={createTaskTitle} />

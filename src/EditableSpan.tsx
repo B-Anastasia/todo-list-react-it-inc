@@ -7,8 +7,9 @@ type EditableSpanPropsType = {
 
 function EditableSpan(props: EditableSpanPropsType) {
   let [editMode, setEditMode] = useState<boolean>(false);
-  let [newTitle, setNewTitle] = useState<string>(props.title);
+  let [newTitle, setNewTitle] = useState<string>("");
   const onEditMode = () => {
+    setNewTitle(props.title);
     setEditMode(true);
   };
   const offEditMode = () => {
