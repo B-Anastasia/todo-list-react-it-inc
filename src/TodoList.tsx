@@ -2,6 +2,9 @@ import React, { ChangeEvent } from "react";
 import { FilterValType, TaskType } from "./App";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
+import { Checkbox, Grid, IconButton } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
+import Button from "@material-ui/core/Button";
 
 type TodoListPropsType = {
   id: string;
@@ -33,41 +36,41 @@ export function TodoList(props: TodoListPropsType) {
   } = props;
 
   /*  let [val, setVal] = useState<string>("");
-  let [error, setError] = useState<string | null>(null);*/
+    let [error, setError] = useState<string | null>(null);*/
 
   /*  const addNewTask = () => {
-    if (val.trim() !== "") {
-      addTask(val, props.id);
-    } else {
-      setError("Title is required");
-    }
-    setVal("");
-  };*/
+      if (val.trim() !== "") {
+        addTask(val, props.id);
+      } else {
+        setError("Title is required");
+      }
+      setVal("");
+    };*/
 
   /*  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setVal(e.currentTarget.value);
-  };
-  const onChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setError(null);
-    setVal(e.currentTarget.value);
-  };*/
+      setVal(e.currentTarget.value);
+    };
+    const onChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+      setError(null);
+      setVal(e.currentTarget.value);
+    };*/
 
   /*  const onClickNewLine = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && e.altKey) {
-      addNewTask();
-    } else if (e.key === "Enter") {
-      setVal(`${val}\r\n`);
-    }
-  };*/
+      if (e.key === "Enter" && e.altKey) {
+        addNewTask();
+      } else if (e.key === "Enter") {
+        setVal(`${val}\r\n`);
+      }
+    };*/
 
   /* const onKeyPressAdd = (e: KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
+      setError(null);
 
-    if (e.charCode === 13) {
-      addNewTask();
-    }
-    // console.log(e.charCode);
-  };*/
+      if (e.charCode === 13) {
+        addNewTask();
+      }
+      // console.log(e.charCode);
+    };*/
 
   let tasksEls = tasks.map((el: TaskType) => {
     const onRemoveTask = () => removeTask(el.id, props.id);
@@ -79,14 +82,22 @@ export function TodoList(props: TodoListPropsType) {
       props.onSaveNewTaskTitle(newTitle, el.id, props.id);
     };
     return (
-      <li
+      <div
         key={el.id}
         className={filter === "all" && el.isDone ? "is-done" : ""}
       >
-        <input type="checkbox" checked={el.isDone} onChange={onChangeHandler} />
+        <Checkbox
+          checked={el.isDone}
+          onChange={onChangeHandler}
+          color={"primary"}
+        />
+        {/*<input type="checkbox" checked={el.isDone} onChange={onChangeHandler} />*/}
         <EditableSpan title={el.title} onSaveTitle={changeT} />
-        <button onClick={onRemoveTask}>x</button>
-      </li>
+        {/*<button onClick={onRemoveTask}>x</button>*/}
+        <IconButton onClick={onRemoveTask}>
+          <Delete />
+        </IconButton>
+      </div>
     );
   });
 
@@ -108,7 +119,10 @@ export function TodoList(props: TodoListPropsType) {
           title={title}
           onSaveTitle={(newTitle) => onChangeTitleListHendler(newTitle)}
         />
-        <button onClick={onDeleteTodoList}>x</button>
+        {/*<button onClick={onDeleteTodoList}>x</button>*/}
+        <IconButton onClick={onDeleteTodoList}>
+          <Delete />
+        </IconButton>
       </h3>
       <AddItemForm addItem={createTaskTitle} />
       {/*<div>
@@ -126,27 +140,38 @@ export function TodoList(props: TodoListPropsType) {
         {error && <div className={"error-message"}>{error}</div>}
         <button onClick={addNewTask}>+</button>
       </div>*/}
-      <ul>{tasksEls}</ul>
-      <div>
-        <button
-          onClick={onFilterAll}
-          className={filter === "all" ? "active-filter" : ""}
-        >
-          All
-        </button>
-        <button
-          onClick={onFilterActive}
-          className={filter === "active" ? "active-filter" : ""}
-        >
-          Active
-        </button>
-        <button
-          onClick={onFilterCompleted}
-          className={filter === "completed" ? "active-filter" : ""}
-        >
-          Completed
-        </button>
-      </div>
+      <div>{tasksEls}</div>
+      <Grid container spacing={1}>
+        <Grid item>
+          <Button
+            variant={filter === "all" ? "contained" : "outlined"}
+            onClick={onFilterAll}
+            className={filter === "all" ? "active-filter" : ""}
+          >
+            All
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant={filter === "active" ? "contained" : "outlined"}
+            color={"secondary"}
+            onClick={onFilterActive}
+            className={filter === "active" ? "active-filter" : ""}
+          >
+            Active
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            variant={filter === "completed" ? "contained" : "outlined"}
+            color={"primary"}
+            onClick={onFilterCompleted}
+            className={filter === "completed" ? "active-filter" : ""}
+          >
+            Completed
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
+import { TextField } from "@material-ui/core";
 
 type EditableSpanPropsType = {
   title: string;
@@ -13,9 +14,14 @@ function EditableSpan(props: EditableSpanPropsType) {
     setEditMode(true);
   };
   const offEditMode = () => {
+    if (newTitle.trim()) {
+      props.onSaveTitle(newTitle);
+    } else {
+      //check on empty string
+      //couldn't insert empty task
+      setNewTitle(props.title);
+    }
     setEditMode(false);
-    props.onSaveTitle(newTitle);
-    // setNewTitle("");
   };
 
   const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +29,13 @@ function EditableSpan(props: EditableSpanPropsType) {
   };
 
   return editMode ? (
-    <input
+    /*<input
+          autoFocus={true}
+          onBlur={offEditMode}
+          value={newTitle}
+          onChange={changeTitle}
+        />*/
+    <TextField
       autoFocus={true}
       onBlur={offEditMode}
       value={newTitle}
