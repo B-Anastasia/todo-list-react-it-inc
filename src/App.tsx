@@ -22,7 +22,7 @@ export type TaskType = {
 };
 
 //create new type for our few todoLists
-type TodoListType = {
+export type TodoListType = {
   id: string;
   title: string;
   filter: FilterValType;
