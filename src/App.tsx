@@ -108,13 +108,13 @@ function App() {
       setTodoLists([...todoLists]);
     }
     /*    setTodoLists(
-              todoLists.map((l) => {
-                if (l.id === todoListsId) {
-                  return { ...l, title: newTitle };
-                }
-                return l;
-              })
-            );*/
+                  todoLists.map((l) => {
+                    if (l.id === todoListsId) {
+                      return { ...l, title: newTitle };
+                    }
+                    return l;
+                  })
+                );*/
   };
 
   const onSaveNewTaskTitle = (
@@ -131,23 +131,23 @@ function App() {
     setTasks(newTasks);
 
     /*  let todoListTasks = tasks[todoListId];
-            let task = todoListTasks.find((t) => t.id === taskId);
-            if (task) {
-              task.title = newTitle;
-              // task = { ...task, title: newTitle };
-              setTasks({ ...tasks });
-            }*/
+                let task = todoListTasks.find((t) => t.id === taskId);
+                if (task) {
+                  task.title = newTitle;
+                  // task = { ...task, title: newTitle };
+                  setTasks({ ...tasks });
+                }*/
   };
 
   /*
-        let tasksForTodoList = tasks;
+          let tasksForTodoList = tasks;
 
-        if (filter === "active") {
-          tasksForTodoList = tasks.filter((el) => !el.isDone);
-        }
-        if (filter === "completed") {
-          tasksForTodoList = tasks.filter((el) => el.isDone);
-        }*/
+          if (filter === "active") {
+            tasksForTodoList = tasks.filter((el) => !el.isDone);
+          }
+          if (filter === "completed") {
+            tasksForTodoList = tasks.filter((el) => el.isDone);
+          }*/
 
   //remove todoList
   function removeTodoList(todoListID: string) {
