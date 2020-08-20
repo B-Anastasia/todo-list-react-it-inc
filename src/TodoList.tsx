@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import { FilterValType, TaskType } from "./App";
+import { FilterValuesType, TaskType } from "./App";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 import { Checkbox, Grid, IconButton } from "@material-ui/core";
@@ -11,10 +11,10 @@ type TodoListPropsType = {
   title: string;
   tasks: Array<TaskType>;
   removeTask: (id: string, todoListId: string) => void;
-  changeFilter: (id: string, value: FilterValType) => void;
+  changeFilter: (id: string, value: FilterValuesType) => void;
   addTask: (val: string, todoListId: string) => void;
   changeStatus: (taskId: string, isDone: boolean, todoListID: string) => void;
-  filter: FilterValType;
+  filter: FilterValuesType;
   removeTodoList: (todoListID: string) => void;
   onSaveNewTaskTitle: (
     newTitle: string,

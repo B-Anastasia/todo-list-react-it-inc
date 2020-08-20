@@ -22,24 +22,24 @@ export type TaskType = {
 };
 
 //create new type for our few todoLists
-export type TodoListType = {
+export type TodolistType = {
   id: string;
   title: string;
-  filter: FilterValType;
+  filter: FilterValuesType;
 };
 
 //new type for associative array
-type TasksStateType = {
+export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
-export type FilterValType = "all" | "active" | "completed";
+export type FilterValuesType = "all" | "active" | "completed";
 
 function App() {
   let todoListID1 = v1();
   let todoListID2 = v1();
 
   //create new structure of the few todolists
-  let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
+  let [todoLists, setTodoLists] = useState<Array<TodolistType>>([
     { id: todoListID1, title: "Books", filter: "all" },
     { id: todoListID2, title: "Songs", filter: "active" },
   ]);
@@ -56,7 +56,7 @@ function App() {
     ],
   });
 
-  // let [filter, setFilter] = useState<FilterValType>("all");
+  // let [filter, setFilter] = useState<FilterValuesType>("all");
 
   function removeTask(id: string, todoListId: string) {
     //to find array of tasks by key from parameters
@@ -92,7 +92,7 @@ function App() {
   }
 
   //add id to the function, change filter value in the todolist.id===id
-  function changeFilter(id: string, value: FilterValType) {
+  function changeFilter(id: string, value: FilterValuesType) {
     //find first value of the first todoLists where true
     let todoList = todoLists.find((tl) => tl.id === id);
     if (todoList) {
@@ -163,7 +163,7 @@ function App() {
     //common id for tasks[] and todolist
     let newTodoListId: string = v1();
 
-    let newTodoList: TodoListType = {
+    let newTodoList: TodolistType = {
       id: newTodoListId,
       title: title,
       filter: "all",
