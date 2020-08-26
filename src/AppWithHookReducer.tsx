@@ -58,8 +58,6 @@ function AppWithHookReducer() {
     { id: todoListID2, title: "Songs", filter: "active" },
   ]);
 
-  // let copyTodoLists= todoLists.map(tl=>({...tl}));
-
   let [tasks, dispatchToTasks] = useReducer(tasksReducer, {
     [todoListID1]: [
       { id: v1(), title: "MobX", isDone: true },

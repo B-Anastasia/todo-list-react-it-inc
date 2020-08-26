@@ -44,6 +44,8 @@ function App() {
     { id: todoListID2, title: "Songs", filter: "active" },
   ]);
 
+  // let copyTodoLists= todoLists.map(tl=>({...tl}));
+
   let [tasks, setTasks] = useState<TasksStateType>({
     [todoListID1]: [
       { id: v1(), title: "MobX", isDone: true },
