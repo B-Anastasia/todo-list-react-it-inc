@@ -59,7 +59,7 @@ function App() {
   });
 
   // let [filter, setFilter] = useState<FilterValuesType>("all");
-
+/*
   function removeTask(id: string, todoListId: string) {
     //to find array of tasks by key from parameters
     let todoListTasks = tasks[todoListId];
@@ -109,14 +109,14 @@ function App() {
       todoList.title = newTitle;
       setTodoLists([...todoLists]);
     }
-    /*    setTodoLists(
+    /!*    setTodoLists(
                   todoLists.map((l) => {
                     if (l.id === todoListsId) {
                       return { ...l, title: newTitle };
                     }
                     return l;
                   })
-                );*/
+                );*!/
   };
 
   const onSaveNewTaskTitle = (
@@ -132,16 +132,16 @@ function App() {
     };
     setTasks(newTasks);
 
-    /*  let todoListTasks = tasks[todoListId];
+    /!*  let todoListTasks = tasks[todoListId];
                 let task = todoListTasks.find((t) => t.id === taskId);
                 if (task) {
                   task.title = newTitle;
                   // task = { ...task, title: newTitle };
                   setTasks({ ...tasks });
-                }*/
+                }*!/
   };
 
-  /*
+  /!*
           let tasksForTodoList = tasks;
 
           if (filter === "active") {
@@ -149,7 +149,7 @@ function App() {
           }
           if (filter === "completed") {
             tasksForTodoList = tasks.filter((el) => el.isDone);
-          }*/
+          }*!/
 
   //remove todoList
   function removeTodoList(todoListID: string) {
@@ -158,7 +158,7 @@ function App() {
     //deleting from object tasks property with key todoListID
     delete tasks[todoListID];
     setTasks({ ...tasks });
-  }
+  }*/
 
   //add new TodoList
   function addTodoList(title: string) {
@@ -206,17 +206,18 @@ function App() {
               <Grid item key={tl.id}>
                 <Paper elevation={3} style={{ padding: "10px" }}>
                   <TodoList
-                    onChangeTitleList={onChangeTitleList}
-                    id={tl.id}
-                    tasks={tasksForTodoList}
-                    title={tl.title}
-                    removeTask={removeTask}
-                    changeFilter={changeFilter}
-                    addTask={addTask}
-                    changeStatus={changeStatus}
-                    filter={tl.filter}
-                    removeTodoList={removeTodoList}
-                    onSaveNewTaskTitle={onSaveNewTaskTitle}
+                    todolist={tl}
+                    // onChangeTitleList={onChangeTitleList}
+                    // id={tl.id}
+                    // tasks={tasksForTodoList}
+                    // title={tl.title}
+                    // removeTask={removeTask}
+                    // changeFilter={changeFilter}
+                    // addTask={addTask}
+                    // changeStatus={changeStatus}
+                    // filter={tl.filter}
+                    // removeTodoList={removeTodoList}
+                    // onSaveNewTaskTitle={onSaveNewTaskTitle}
                   />
                 </Paper>
               </Grid>

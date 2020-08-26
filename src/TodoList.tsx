@@ -5,86 +5,115 @@ import EditableSpan from "./EditableSpan";
 import { Checkbox, Grid, IconButton } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { AppRootStateType } from "./state/store";
+// import { TasksStateType, TodolistType } from "./AppWithRedux";
+import {
+  addTaskAC,
+  changeTaskStatusAC,
+  changeTaskTitleAC,
+  removeTaskAC,
+} from "./state/tasks-reducer";
+import {
+  ChangeTodolistFilterAC,
+  ChangeTodolistTitleAC,
+  RemoveTodolistAC,
+} from "./state/todolists-reducer";
+import { TodolistType } from "./AppWithHookReducer";
 
 type TodoListPropsType = {
-  id: string;
-  title: string;
-  tasks: Array<TaskType>;
-  removeTask: (id: string, todoListId: string) => void;
-  changeFilter: (id: string, value: FilterValuesType) => void;
-  addTask: (val: string, todoListId: string) => void;
-  changeStatus: (taskId: string, isDone: boolean, todoListID: string) => void;
-  filter: FilterValuesType;
-  removeTodoList: (todoListID: string) => void;
-  onSaveNewTaskTitle: (
+  todolist: TodolistType;
+  id?: string;
+  title?: string;
+  filter?: FilterValuesType;
+  onChangeTitleList?: (newTitle: string, todoListId: string) => void;
+  tasks?: Array<TaskType>;
+  removeTask?: (id: string, todoListId: string) => void;
+  addTask?: (val: string, todoListId: string) => void;
+  onSaveNewTaskTitle?: (
     newTitle: string,
     taskId: string,
     todoListId: string
   ) => void;
-  onChangeTitleList: (newTitle: string, todoListId: string) => void;
+  changeStatus?: (taskId: string, isDone: boolean, todoListID: string) => void;
+  changeFilter?: (id: string, value: FilterValuesType) => void;
+  removeTodoList?: (todoListID: string) => void;
 };
 
 export function TodoList(props: TodoListPropsType) {
-  const {
-    title,
-    tasks,
-    removeTask,
-    changeFilter,
-    changeStatus,
-    filter,
-    removeTodoList,
-  } = props;
+  // let todoLists = useSelector<AppRootStateType, TodolistType>(
+  //   (state) => state.todolists && todoLists.find((t) => t.id === props.id)
+  // );
+  let tasks = useSelector<AppRootStateType, Array<TaskType>>(
+    (state) => state.tasks[props.todolist.id]
+  );
+  let dispatch = useDispatch();
+
+  //to filter tasks
+  let tasksForTodoList = tasks;
+
+  if (props.todolist.filter === "active") {
+    tasksForTodoList = tasksForTodoList.filter((el) => !el.isDone);
+  }
+  if (props.todolist.filter === "completed") {
+    tasksForTodoList = tasksForTodoList.filter((el) => el.isDone);
+  }
 
   /*  let [val, setVal] = useState<string>("");
-    let [error, setError] = useState<string | null>(null);*/
+      let [error, setError] = useState<string | null>(null);*/
 
   /*  const addNewTask = () => {
-      if (val.trim() !== "") {
-        addTask(val, props.id);
-      } else {
-        setError("Title is required");
-      }
-      setVal("");
-    };*/
+        if (val.trim() !== "") {
+          addTask(val, props.id);
+        } else {
+          setError("Title is required");
+        }
+        setVal("");
+      };*/
 
   /*  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-      setVal(e.currentTarget.value);
-    };
-    const onChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-      setError(null);
-      setVal(e.currentTarget.value);
-    };*/
+        setVal(e.currentTarget.value);
+      };
+      const onChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setError(null);
+        setVal(e.currentTarget.value);
+      };*/
 
   /*  const onClickNewLine = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === "Enter" && e.altKey) {
-        addNewTask();
-      } else if (e.key === "Enter") {
-        setVal(`${val}\r\n`);
-      }
-    };*/
+        if (e.key === "Enter" && e.altKey) {
+          addNewTask();
+        } else if (e.key === "Enter") {
+          setVal(`${val}\r\n`);
+        }
+      };*/
 
   /* const onKeyPressAdd = (e: KeyboardEvent<HTMLInputElement>) => {
-      setError(null);
+        setError(null);
 
-      if (e.charCode === 13) {
-        addNewTask();
-      }
-      // console.log(e.charCode);
-    };*/
+        if (e.charCode === 13) {
+          addNewTask();
+        }
+        // console.log(e.charCode);
+      };*/
 
-  let tasksEls = tasks.map((el: TaskType) => {
-    const onRemoveTask = () => removeTask(el.id, props.id);
+  let tasksEls = tasksForTodoList.map((el: TaskType) => {
+    const onRemoveTask = () => dispatch(removeTaskAC(el.id, props.todolist.id));
+
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
       let newIsDone = e.currentTarget.checked; //new value checked for checked task
-      changeStatus(el.id, newIsDone, props.id);
+      dispatch(changeTaskStatusAC(el.id, newIsDone, props.todolist.id));
     };
+
     const changeT = (newTitle: string) => {
-      props.onSaveNewTaskTitle(newTitle, el.id, props.id);
+      dispatch(changeTaskTitleAC(el.id, newTitle, props.todolist.id));
     };
+
     return (
       <div
         key={el.id}
-        className={filter === "all" && el.isDone ? "is-done" : ""}
+        className={
+          props.todolist.filter === "all" && el.isDone ? "is-done" : ""
+        }
       >
         <Checkbox
           checked={el.isDone}
@@ -102,21 +131,31 @@ export function TodoList(props: TodoListPropsType) {
   });
 
   const createTaskTitle = (title: string) => {
-    props.addTask(title, props.id);
+    dispatch(addTaskAC(title, props.todolist.id));
   };
 
-  const onDeleteTodoList = () => removeTodoList(props.id);
+  const onFilterAll = () =>
+    dispatch(ChangeTodolistFilterAC(props.todolist.id, "all"));
 
-  const onFilterAll = () => changeFilter(props.id, "all");
-  const onFilterActive = () => changeFilter(props.id, "active");
-  const onFilterCompleted = () => changeFilter(props.id, "completed");
+  const onFilterActive = () =>
+    dispatch(ChangeTodolistFilterAC(props.todolist.id, "active"));
+
+  const onFilterCompleted = () =>
+    dispatch(ChangeTodolistFilterAC(props.todolist.id, "completed"));
+
+  const onDeleteTodoList = () => {
+    const action = RemoveTodolistAC(props.todolist.id);
+    dispatch(action);
+  };
+
   const onChangeTitleListHendler = (newTitle: string) =>
-    props.onChangeTitleList(newTitle, props.id);
+    dispatch(ChangeTodolistTitleAC(props.todolist.id, newTitle));
+
   return (
     <div>
       <h3>
         <EditableSpan
-          title={title}
+          title={props.todolist.title}
           onSaveTitle={(newTitle) => onChangeTitleListHendler(newTitle)}
         />
         {/*<button onClick={onDeleteTodoList}>x</button>*/}
@@ -144,29 +183,37 @@ export function TodoList(props: TodoListPropsType) {
       <Grid container spacing={1}>
         <Grid item>
           <Button
-            variant={filter === "all" ? "contained" : "outlined"}
+            variant={props.todolist.filter === "all" ? "contained" : "outlined"}
             onClick={onFilterAll}
-            className={filter === "all" ? "active-filter" : ""}
+            className={props.todolist.filter === "all" ? "active-filter" : ""}
           >
             All
           </Button>
         </Grid>
         <Grid item>
           <Button
-            variant={filter === "active" ? "contained" : "outlined"}
+            variant={
+              props.todolist.filter === "active" ? "contained" : "outlined"
+            }
             color={"secondary"}
             onClick={onFilterActive}
-            className={filter === "active" ? "active-filter" : ""}
+            className={
+              props.todolist.filter === "active" ? "active-filter" : ""
+            }
           >
             Active
           </Button>
         </Grid>
         <Grid item>
           <Button
-            variant={filter === "completed" ? "contained" : "outlined"}
+            variant={
+              props.todolist.filter === "completed" ? "contained" : "outlined"
+            }
             color={"primary"}
             onClick={onFilterCompleted}
-            className={filter === "completed" ? "active-filter" : ""}
+            className={
+              props.todolist.filter === "completed" ? "active-filter" : ""
+            }
           >
             Completed
           </Button>
