@@ -1,19 +1,10 @@
-import React, { useState } from "react";
+import React, {useCallback, useState} from "react";
 import "./App.css";
-import { TodoList } from "./TodoList";
-import { v1 } from "uuid";
-import AddItemForm from "./AddItemForm";
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-  Container,
-  Grid,
-  Paper,
-} from "@material-ui/core";
-import { Menu } from "@material-ui/icons";
+import {TodoList} from "./TodoList";
+import {v1} from "uuid";
+import AddItemForm from "./AddItemForm/AddItemForm";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography,} from "@material-ui/core";
+import {Menu} from "@material-ui/icons";
 
 export type TaskType = {
   id: string;
@@ -59,7 +50,7 @@ function App() {
   });
 
   // let [filter, setFilter] = useState<FilterValuesType>("all");
-/*
+  /*
   function removeTask(id: string, todoListId: string) {
     //to find array of tasks by key from parameters
     let todoListTasks = tasks[todoListId];
@@ -161,7 +152,7 @@ function App() {
   }*/
 
   //add new TodoList
-  function addTodoList(title: string) {
+  const addTodoList = useCallback((title: string) => {
     //common id for tasks[] and todolist
     let newTodoListId: string = v1();
 
@@ -173,7 +164,7 @@ function App() {
     setTodoLists([newTodoList, ...todoLists]);
     //added new array of tasks for idtodolist
     setTasks({ ...tasks, [newTodoListId]: [] });
-  }
+  }, [tasks,todoLists]);
 
   return (
     <div className="App">
@@ -194,14 +185,14 @@ function App() {
         <Grid container spacing={3}>
           {todoLists.map((tl) => {
             // before return the list we need to filter it
-            let tasksForTodoList = tasks[tl.id];
+            /*let tasksForTodoList = tasks[tl.id];
 
             if (tl.filter === "active") {
               tasksForTodoList = tasksForTodoList.filter((el) => !el.isDone);
             }
             if (tl.filter === "completed") {
               tasksForTodoList = tasksForTodoList.filter((el) => el.isDone);
-            }
+            }*/
             return (
               <Grid item key={tl.id}>
                 <Paper elevation={3} style={{ padding: "10px" }}>
