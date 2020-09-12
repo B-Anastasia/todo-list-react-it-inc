@@ -18,8 +18,6 @@ export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
     if (newTitle.trim()) {
       props.onSaveTitle(newTitle);
     } else {
-      //check on empty string
-      //couldn't insert empty task
       setNewTitle(props.title);
     }
     setEditMode(false);
