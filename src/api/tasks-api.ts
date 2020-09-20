@@ -1,4 +1,5 @@
 import {instance} from "./base-api";
+import {IResponseType} from "./todolist-api";
 
 export type ITaskPropertiesUpdateType = {
     title: string
@@ -10,15 +11,33 @@ export type ITaskPropertiesUpdateType = {
     deadline: string | null
 }
 
-type ITaskType = {
-    description: string
+export type TasksStateType = {
+    [key: string]: Array<ITaskType>;
+};
+
+export enum TasksStatuses{
+    New=0,
+    InProgress=1,
+    Completed=2,
+    Draft=3
+}
+export enum TasksPriorities{
+    Low =0,
+    Middle=1,
+    Hi=2,
+    Urgently=3,
+    Later=4
+}
+
+export type ITaskType = {
+    id: string
     title: string
+    description: string
     completed: boolean
-    status: number
-    priority: number
+    status: TasksStatuses
+    priority: TasksPriorities
     startDate: string
     deadline: string
-    id: string
     todoListId: string
     order: number
     addedDate: string
@@ -38,17 +57,17 @@ export const tasksApi = {
     },
     addTask(todolistId: string, title: string) {
         return instance
-            .post(`todo-lists/${todolistId}/tasks`, {title})
+            .post<IResponseType<{item:ITaskType}>>(`todo-lists/${todolistId}/tasks`, {title})
             .then(res => res.data)
     },
     deleteTask(todolistId: string,taskId:string){
         return instance
-            .delete(`todo-lists/${todolistId}/tasks/${taskId}`)
+            .delete<IResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
             .then(res=>res.data)
     },
     updateTask(todolistId: string,taskId:string,properties:ITaskPropertiesUpdateType){
         return instance
-            .put(`todo-lists/${todolistId}/tasks/${taskId}`,properties)
+            .put<IResponseType<{item:ITaskType}>>(`todo-lists/${todolistId}/tasks/${taskId}`,properties)
             .then(res=>res.data)
     }
 }

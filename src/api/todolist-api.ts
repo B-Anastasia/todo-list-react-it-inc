@@ -1,13 +1,13 @@
 import {instance} from "./base-api";
 
-type ITodolistType = {
+export type ITodolistType = {
     id: string;
     addedDate: string;
     order: number;
     title: string;
 };
 
-type IResponseType<D = {}> = {
+export type IResponseType<D = {}> = {
     resultCode: number;
     messages: Array<string>;
     data: D;

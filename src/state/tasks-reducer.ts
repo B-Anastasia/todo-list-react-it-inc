@@ -1,9 +1,6 @@
-import { TasksStateType, TaskType } from "../App";
-import { v1 } from "uuid";
-import {
-  AddTodolistActionType,
-  RemoveTodolistActionType,
-} from "./todolists-reducer";
+import {v1} from "uuid";
+import {AddTodolistActionType, RemoveTodolistActionType,} from "./todolists-reducer";
+import {TasksPriorities, TasksStateType, TasksStatuses} from "../api/tasks-api";
 
 export type RemoveTaskType = {
   type: "REMOVE_TASK";
@@ -18,7 +15,7 @@ export type AddTaskType = {
 export type ChangeTaskStatusType = {
   type: "CHANGE_STATUS_TASK";
   id: string;
-  isDone: boolean;
+  status:TasksStatuses
   todolistId: string;
 };
 export type ChangeTaskTitleType = {
@@ -28,7 +25,7 @@ export type ChangeTaskTitleType = {
   todolistId: string;
 };
 
-type ActionsType =
+export type ActionsType =
   | RemoveTaskType
   | AddTaskType
   | ChangeTaskStatusType
@@ -41,7 +38,7 @@ const initialState: TasksStateType = {};
 export const tasksReducer = (
   state: TasksStateType = initialState,
   action: ActionsType
-) => {
+):TasksStateType => {
   switch (action.type) {
     case "REMOVE_TASK":
       return {
@@ -54,7 +51,15 @@ export const tasksReducer = (
       const newTask = {
         id: v1(),
         title: action.title,
-        isDone: false,
+            todoListId: action.todolistId,
+            status: TasksStatuses.New,
+            startDate: '',
+            deadline: '',
+            addedDate: '',
+            order: 0,
+            priority: TasksPriorities.Low,
+            completed: true,
+            description: '',
       };
       return {
         ...state,
@@ -63,21 +68,22 @@ export const tasksReducer = (
     case "CHANGE_STATUS_TASK":
       return {
         ...state,
-        [action.todolistId]: newArr(
+        [action.todolistId]:state[action.todolistId].map(el=>(el.id===action.id)? {...el,status: action.status}:el)
+      /*  [action.todolistId]: newArr(
           state[action.todolistId],
           action.id,
-          action.isDone
-        ),
+          action.status
+        ),*/
       };
     case "CHANGE_TITLE_TASK":
       return {
         ...state,
-        [action.todolistId]: newArr(
-          state[action.todolistId],
-          action.id,
-          action.title
-        ),
-        // [action.todolistId]:state[action.todolistId].map(t=>t.id===action.id? {...t,title:action.title}:t)
+        [action.todolistId]: state[action.todolistId].map(el=>(el.id===action.id)? {...el,title: action.title}:el)
+          //   newArr(
+          // state[action.todolistId],
+          // action.id,
+          // action.title
+        // ),
       };
     case "ADD-TODOLIST":
       return {
@@ -106,10 +112,10 @@ export const addTaskAC = (title: string, todolistId: string): AddTaskType => {
 
 export const changeTaskStatusAC = (
   id: string,
-  isDone: boolean,
+  status:TasksStatuses,
   todolistId: string
 ): ChangeTaskStatusType => {
-  return { type: "CHANGE_STATUS_TASK", id, isDone, todolistId };
+  return { type: "CHANGE_STATUS_TASK", id, status, todolistId };
 };
 export const changeTaskTitleAC = (
   id: string,
@@ -119,14 +125,14 @@ export const changeTaskTitleAC = (
   return { type: "CHANGE_TITLE_TASK", id, title, todolistId };
 };
 
-const newArr = (
-  tasks: Array<TaskType>,
-  taskId: string,
-  property: boolean | string
-): Array<TaskType> => {
-  let propName = typeof property === "boolean" ? "isDone" : "title";
-
-  return tasks.map((t) =>
-    t.id === taskId ? { ...t, [propName]: property } : t
-  );
-};
+// const newArr = (
+//   tasks: Array<ITaskType>,
+//   taskId: string,
+//   property: boolean | string |TasksStatuses |TasksPriorities
+// ): Array<ITaskType> => {
+//   let propName = typeof property === "boolean" ? "isDone" : "title";
+//
+//   return tasks.map((t) =>
+//     t.id === taskId ? { ...t, [propName]: property } : t
+//   );
+// };
