@@ -1,12 +1,12 @@
 import React, {useCallback} from "react";
-import AddItemForm from "./AddItemForm/AddItemForm";
+import AddItemForm from "../AddItemForm/AddItemForm";
 import {Grid, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
-import {FilterValuesType, ITodoListDomenType,} from "./state/todolists-reducer";
-import {EditableSpan} from "./EditableSpan/EditableSpan";
-import {Task} from "./Task/Task";
-import {ITaskType, TasksStatuses} from "./api/tasks-api";
+import {FilterValuesType, ITodoListDomenType,} from "../../state/todolists-reducer";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {Task} from "../Task/Task";
+import {ITaskType, TasksStatuses} from "../../api/tasks-api";
 
 type TodoListPropsType = {
     todolist: ITodoListDomenType

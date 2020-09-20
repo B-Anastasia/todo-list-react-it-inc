@@ -3,7 +3,7 @@ import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 
 import AppWithRedux from "./AppWithRedux";
-import { ReduxStoreProviderDecorator } from "../stories/decorators/ReduxStoreProviderDecorator";
+import { ReduxStoreProviderDecorator } from "../../stories/decorators/ReduxStoreProviderDecorator";
 
 export default {
   title: "TodoList/AppWithRedux",
@@ -11,4 +11,4 @@ export default {
   decorators: [ReduxStoreProviderDecorator],
 } as Meta;
 
-export const AppWithReduxStory = (props: any) => <AppWithRedux />;
+export const AppWithReduxStory = () => <AppWithRedux />;

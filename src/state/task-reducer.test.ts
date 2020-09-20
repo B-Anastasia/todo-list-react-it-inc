@@ -1,4 +1,4 @@
-import { TasksStateType } from "../App/App";
+import { TasksStateType } from "../components/App/App";
 import {
   addTaskAC,
   changeTaskStatusAC,

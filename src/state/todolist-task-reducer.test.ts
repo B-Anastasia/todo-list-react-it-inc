@@ -1,4 +1,4 @@
-import { TasksStateType, TodolistType } from "../App/App";
+import { TasksStateType, TodolistType } from "../components/App/App";
 import {
   AddTodolistAC,
   RemoveTodolistAC,
