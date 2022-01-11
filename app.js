@@ -9,7 +9,7 @@ app.listen(port, (err)=>{
     if (process.NODE_ENV === 'production') {
         app.use(express.static('build'));
         app.get('*', (req, res)=>{
-            res.sendFile(path.resolve(__dirname, 'build', 'index.html'))
+            req.sendFile(path.resolve(__dirname, 'build', 'index.html'))
         })
     }
     if (err) return console.log(err);
