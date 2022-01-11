@@ -19,10 +19,12 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
-    "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "typescript": "~3.7.2",
     "uuid": "^8.1.0"
+  },
+  "resolutions": {
+    "babel-loader": "8.1.0"
   },
   "homepage": "https://b-anastasia.github.io/todo-list-react-it-inc",
   "scripts": {
@@ -61,12 +63,12 @@
     "@storybook/node-logger": "^6.0.21",
     "@storybook/preset-create-react-app": "^3.1.4",
     "@storybook/react": "^6.0.21",
-    "babel-loader": "^8.1.0",
     "gh-pages": "^3.1.0",
     "jest-image-snapshot": "^4.2.0",
     "jest-puppeteer": "^4.4.0",
     "puppeteer": "^2.1.0",
     "react-is": "^16.13.1",
+    "react-scripts": "^4.0.0",
     "start-server-and-test": "^1.11.3"
   }
 }
